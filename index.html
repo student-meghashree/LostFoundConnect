@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" onclick="showHome()">
+                <i class="fas fa-search"></i>
+                <span>Lost & Found</span>
+            </div>
+            <div class="nav-links">
+                <button class="nav-btn" onclick="showHome()">Home</button>
+                <button class="nav-btn" onclick="showBrowse()">Browse Items</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home View -->
+        <div id="home-view" class="view">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1>Campus Lost & Found</h1>
+                <p>Help your fellow students reunite with their lost belongings. Report what you've found or search for what you've lost.</p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-lost" onclick="showReportForm('lost')">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Report Lost Item
+                    </button>
+                    <button class="btn btn-found" onclick="showReportForm('found')">
+                        <i class="fas fa-check-circle"></i>
+                        Report Found Item
+                    </button>
+                    <button class="btn btn-outline" onclick="showBrowse()">
+                        <i class="fas fa-search"></i>
+                        Browse Items
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-items">0</div>
+                    <div class="stat-label">Total Reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-lost" id="lost-items">0</div>
+                    <div class="stat-label">Lost Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-found" id="found-items">0</div>
+                    <div class="stat-label">Found Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-resolved" id="resolved-items">0</div>
+                    <div class="stat-label">Reunited</div>
+                </div>
+            </div>
+
+            <!-- Recent Items -->
+            <div class="recent-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-trending-up"></i> Recent Reports</h2>
+                    <p>Latest items reported by students</p>
+                </div>
+                <div id="recent-items" class="recent-items">
+                    <!-- Recent items will be populated by JavaScript -->
+                </div>
+                <button class="btn btn-outline full-width" onclick="showBrowse()">
+                    View All Items
+                </button>
+            </div>
+
+            <!-- How It Works -->
+            <div class="how-it-works">
+                <div class="section-header">
+                    <h2>How It Works</h2>
+                    <p>Simple steps to help reunite students with their belongings</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-icon step-lost">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <h3>Lost Something?</h3>
+                        <p>Report your lost item with details and photo to help others identify it</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon step-found">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Found Something?</h3>
+                        <p>Report found items to help fellow students locate their belongings</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon step-connect">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Get Connected</h3>
+                        <p>Browse items and connect directly with finders or owners</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Form View -->
+        <div id="report-view" class="view hidden">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2 id="form-title">Report Item</h2>
+                </div>
+                
+                <form id="report-form" class="report-form">
+                    <input type="hidden" id="item-type" name="type">
+                    
+                    <div class="form-group">
+                        <label for="title">Item Title *</label>
+                        <input type="text" id="title" name="title" required placeholder="What did you lose/find?">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category *</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Books">Books</option>
+                            <option value="Keys">Keys</option>
+                            <option value="Jewelry">Jewelry</option>
+                            <option value="Sports Equipment">Sports Equipment</option>
+                            <option value="Bags/Backpacks">Bags/Backpacks</option>
+                            <option value="Documents">Documents</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" name="description" required rows="4" 
+                                placeholder="Provide detailed description (color, size, distinctive features, etc.)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location *</label>
+                        <input type="text" id="location" name="location" required 
+                               placeholder="Where was it last seen/found?">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Photo (Optional)</label>
+                        <div class="file-input-container">
+                            <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(this)">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div id="image-preview" class="image-preview hidden">
+                            <img id="preview-img" src="" alt="Preview">
+                        </div>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3>Contact Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-name">Your Name *</label>
+                                <input type="text" id="contact-name" name="contactName" required placeholder="Full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email *</label>
+                                <input type="email" id="contact-email" name="contactEmail" required 
+                                       placeholder="your.email@university.edu">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-phone">Phone Number (Optional)</label>
+                            <input type="tel" id="contact-phone" name="contactPhone" placeholder="(555) 123-4567">
+                        </div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" id="submit-btn" class="btn btn-primary">Report Item</button>
+                        <button type="button" class="btn btn-outline" onclick="showHome()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Browse View -->
+        <div id="browse-view" class="view hidden">
+            <!-- Search and Filters -->
+            <div class="filters-section">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search items..." onkeyup="filterItems()">
+                </div>
+                
+                <div class="filter-controls">
+                    <select id="type-filter" onchange="filterItems()">
+                        <option value="all">All Items</option>
+                        <option value="lost">Lost Items</option>
+                        <option value="found">Found Items</option>
+                    </select>
+                    
+                    <select id="category-filter" onchange="filterItems()">
+                        <option value="all">All Categories</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Results Count -->
+            <div class="results-info">
+                <span id="results-count">0 items found</span>
+            </div>
+
+            <!-- Items Grid -->
+            <div id="items-grid" class="items-grid">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+
+            <!-- No Results -->
+            <div id="no-results" class="no-results hidden">
+                <i class="fas fa-search"></i>
+                <h3>No items found</h3>
+                <p>Try adjusting your search or filters</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contact Information</h3>
+                <button class="modal-close" onclick="closeContactModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="contact-item-title"></p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <strong>Name:</strong> <span id="contact-name-display"></span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>Email:</strong> 
+                        <a id="contact-email-link" href="" class="contact-link"></a>
+                    </div>
+                    <div class="contact-item" id="phone-section">
+                        <strong>Phone:</strong> 
+                        <a id="contact-phone-link" href="" class="contact-link"></a>
+                    </div>
+                </div>
+                <button id="send-email-btn" class="btn btn-primary full-width">
+                    <i class="fas fa-envelope"></i> Send Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
